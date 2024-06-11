@@ -35,9 +35,19 @@ function every(array, test) {
 // dominantDirection ///////////////////////////////////////////////////////////
 // /////////////////////////////////////////////////////////////////////////////
 
-function dominantDirection() {
-  
+function dominantDirection(text) {
+  var counted = countBy(text, function(char) {
+    var script = characterScript(char.codePointAt(0));
+    return script ? script.direction : "none";
+  }).filter(function(count) {
+    return count.name != "none";
+  });
 
+  if (counted.length == 0) return "ltr";
+
+  return counted.reduce(function(a, b) {
+    return a.count > b.count ? a : b;
+  }).name;
 }
 
 // /////////////////////////////////////////////////////////////////////////////
